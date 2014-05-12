@@ -101,7 +101,7 @@ NSString * const kMagicalRecordImportAttributeUseDefaultValueWhenNotPresent = @"
         if ([relationshipInfo respondsToSelector:@selector(isOrdered)] && [relationshipInfo isOrdered])
         {
             //Need to get the ordered set
-            NSString *selectorName = [[relationshipInfo name] stringByAppendingString:@"Set"];
+            NSString *selectorName = [relationshipInfo name];
             relationshipSource = [self performSelector:NSSelectorFromString(selectorName)];
             addRelationMessageFormat = @"addObject:";
         }
@@ -156,6 +156,8 @@ NSString * const kMagicalRecordImportAttributeUseDefaultValueWhenNotPresent = @"
         
         if ([relationshipInfo isToMany] && [relatedObjectData isKindOfClass:[NSArray class]])
         {
+            id relationshipSource = [self performSelector:NSSelectorFromString([relationshipInfo name])];
+            [relationshipSource removeAllObjects];
             for (id singleRelatedObjectData in relatedObjectData) 
             {
                 establishRelationship(relationshipInfo, singleRelatedObjectData);
